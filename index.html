@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actualizador Masivo para Switches S600 C-137 v1.9 | SOMOS Internet</title>
+  <meta name="description" content="Documentación interactiva oficial y landing page del Actualizador Masivo para Switches S600 C-137 v1.9. Arquitectura en memoria RAM, Paramiko SSH y exclusión mutua por hardware.">
+  <link rel="icon" type="image/png" href="assets/img/branding/app_icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       NAVBAR SUPERIOR STICKY
+       ======================================================================== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="#" class="nav-brand" title="Inicio - Actualizador S600">
+        <img src="assets/img/branding/app_icon.png" alt="Icono Actualizador S600" class="nav-icon">
+        <img src="assets/img/branding/somos_logo.png" alt="Logotipo SOMOS Internet" class="nav-logo">
+        <span class="nav-version-badge" title="Versión de Producción C-137 v1.9">
+          <span class="nav-status-dot"></span>
+          <span class="nav-version-text">C-137 v1.9 (Producción)</span>
+        </span>
+      </a>
+
+      <ul class="nav-links" id="nav-links" role="navigation" aria-label="Navegación principal">
+        <li><a href="#arquitectura" class="nav-link">Arquitectura</a></li>
+        <li><a href="#hardware" class="nav-link">Hardware</a></li>
+        <li><a href="#paso1" class="nav-link">Paso 1 (IPs)</a></li>
+        <li><a href="#paso2" class="nav-link">Paso 2 (Flasheo)</a></li>
+        <li><a href="#audio" class="nav-link">Audio Feedback</a></li>
+        <li><a href="#galeria" class="nav-link">Galería</a></li>
+        <li><a href="#despliegue" class="nav-link">Despliegue Git</a></li>
+        <li><a href="#troubleshooting" class="nav-link">CLI & Soporte</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn btn-icon-toggle" id="nav-mute-toggle" title="Alternar audio del sistema (🔊/🔇)" aria-label="Silenciar audio" aria-pressed="false">🔊</button>
+        <a href="https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600" target="_blank" rel="noopener noreferrer" class="btn btn-secondary nav-github-btn" title="Ver repositorio en GitHub">
+          <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-links" aria-haspopup="true">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       HERO SECTION
+       ======================================================================== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-banner-wrap">
+        <img src="assets/img/branding/somos_banner_inicio.png" alt="Banner Institucional SOMOS - Actualizador S600" data-zoomable="true" data-title="Banner Oficial SOMOS S600" data-desc="Identidad visual y cabecera del proyecto de actualización masiva.">
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge-live">
+          <span class="nav-status-dot"></span>
+          <span>TFTP RFC 1350 en RAM (UDP 69 Activo) • 26 Tests Pasados</span>
+        </div>
+
+        <h1 class="hero-title">
+          Actualizador Masivo para <br>
+          <span class="highlight">Switches S600 C-137 v1.9</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Orquestación de alto rendimiento con servidor TFTP RFC 1350 en memoria RAM (Zero Disk I/O), automatización SSH con Paramiko y exclusión mutua por hardware para el flasheo concurrente de switches gestionables SOMOS S600W-5GT-2S+_FB.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#paso1" class="btn btn-emerald">
+            <span>⚡ Explorar Flujo Operativo</span>
+          </a>
+          <a href="#simulador-paso2" class="btn btn-primary">
+            <span>🔬 Simulador Concurrente</span>
+          </a>
+          <a href="#despliegue" class="btn btn-secondary">
+            <span>🚀 Guía de Despliegue en GitHub</span>
+          </a>
+        </div>
+
+        <div class="hero-stats-grid">
+          <div class="stat-card">
+            <div class="stat-val emerald">26/26</div>
+            <div class="stat-label">Pruebas Unitarias OK</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val blue">RAM</div>
+            <div class="stat-label">TFTP Zero Disk Bottleneck</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val cyan">0 Colisiones</div>
+            <div class="stat-label">Mutex _BASE_IP_LOCK</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val amber">N-Hilos</div>
+            <div class="stat-label">Concurrencia Paralela</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 1: ARQUITECTURA TÉCNICA (R1)
+       ======================================================================== -->
+  <section id="arquitectura" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag blue">Capa de Ingeniería (R1)</span>
+        <h2 class="section-title">Arquitectura Técnica de 4 Capas</h2>
+        <p class="section-desc">
+          El sistema desacopla la presentación visual, la sincronización entre hilos, el cliente SSH y el motor de transferencia TFTP para garantizar estabilidad absoluta en entornos de laboratorio y staging.
+        </p>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-layers-list" id="arch-layers-list">
+          <!-- Renderizado dinámicamente por app.js -->
+        </div>
+
+        <div class="card arch-detail-panel">
+          <div class="card-header">
+            <span class="arch-layer-badge" id="arch-detail-badge">CAPA SELECCIONADA</span>
+            <span class="tag-badge emerald">Thread-Safe</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title" id="arch-detail-title">Cargando arquitectura...</h3>
+            <p class="section-desc" id="arch-detail-desc" style="margin-top: 0.75rem;">Seleccione una capa para visualizar sus garantías de seguridad y diseño de hilos.</p>
+            <div class="cli-box">
+              <div class="cli-box-header">
+                <span class="cli-box-title">Implementación en Código Fuente</span>
+              </div>
+              <pre><code id="arch-detail-code"># Código fuente representativo</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Topología de Staging -->
+      <div class="card" style="margin-top: 2.5rem;">
+        <div class="card-header">
+          <h3 class="card-title">Topología de Red de Staging Recomendada</h3>
+          <span class="tag-badge blue">Subred 192.168.0.0/24</span>
+        </div>
+        <div class="card-body">
+          <div style="cursor: pointer;" title="Haga clic para ampliar el diagrama de topología">
+            <img src="assets/img/diagrams/diagrama_topologia.png" alt="Diagrama de Topología de Staging para Switches S600" data-zoomable="true" data-title="Topología de Red de Staging Oficial" data-desc="Interconexión entre el PC Operador (192.168.0.11), switch intermedio de staging y los switches S600 del lote.">
+          </div>
+
+          <div class="callout-box warning">
+            <div class="callout-icon">⚠️</div>
+            <div class="callout-content">
+              <h4 class="callout-title">Regla de Oro Operativa</h4>
+              <p class="callout-text">
+                <strong>Jamás conecte simultáneamente dos switches nuevos con la IP de fábrica (192.168.0.1) a la red de staging.</strong> Ambos equipos colisionarían en la capa de enlace (ARP) y en capa IP. El Paso 1 resuelve esto asignando IPs secuencialmente mediante exclusión mutua de hardware.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 2: HARDWARE OBJETIVO (S600)
+       ======================================================================== -->
+  <section id="hardware" class="section alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag emerald">Hardware Objetivo</span>
+        <h2 class="section-title">Anatomía y Especificaciones del Switch S600</h2>
+        <p class="section-desc">
+          Identificación física de interfaces, puertos de staging, bahías de fibra óptica 10G y procedimiento de reinicio por hardware para el modelo SOMOS S600W-5GT-2S+_FB.
+        </p>
+      </div>
+
+      <div class="hardware-anatomy-grid">
+        <div class="hardware-preview" title="Haga clic para ampliar la anatomía del switch">
+          <img src="assets/img/diagrams/diagrama_anatomia_switch.png" alt="Diagrama Frontal del Switch S600W-5GT-2S+_FB" data-zoomable="true" data-title="Anatomía Frontal: SOMOS S600W-5GT-2S+_FB" data-desc="Esquema con código de color: Puerto 1 (Staging), Puertos 2-5 (LAN PoE), Puertos 6-7 (SFP+ 10G) y LEDs.">
+        </div>
+
+        <div class="hardware-callouts-list">
+          <div class="hw-callout-item">
+            <div class="hw-callout-badge p1">P1</div>
+            <div class="hw-callout-info">
+              <h4>Puerto 1 (RJ45 2.5G Staging)</h4>
+              <p>Puerto primario obligatorio de fábrica. Toda asignación secuencial inicial (Paso 1) se realiza conectando el cable directo a este puerto.</p>
+            </div>
+          </div>
+
+          <div class="hw-callout-item">
+            <div class="hw-callout-badge lan">P2-5</div>
+            <div class="hw-callout-info">
+              <h4>Puertos 2 al 5 (RJ45 2.5G LAN PoE)</h4>
+              <p>Puertos de datos y alimentación PoE pasiva hacia Access Points u otros switches secundarios en despliegues FTTH/WISP.</p>
+            </div>
+          </div>
+
+          <div class="hw-callout-item">
+            <div class="hw-callout-badge sfp">P6-7</div>
+            <div class="hw-callout-info">
+              <h4>Puertos 6 y 7 (SFP+ 10G Uplink)</h4>
+              <p>Bahías para transceptores ópticos SFP+ o cables DAC a 10 Gigabits para interconexión a la red troncal (Core / Distribución).</p>
+            </div>
+          </div>
+
+          <div class="hw-callout-item">
+            <div class="hw-callout-badge rst">RST</div>
+            <div class="hw-callout-info">
+              <h4>Botón Reset & LEDs de Estado</h4>
+              <p>Presionar RST durante 10 segundos restaura IP a <code>192.168.0.1</code>. El LED SYS parpadeante indica bootloader; fijo indica sistema operativo listo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 3: PASO 1 - ASIGNACIÓN SECUENCIAL DE IPS (R2)
+       ======================================================================== -->
+  <section id="paso1" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag blue">Flujo Operativo (R2)</span>
+        <h2 class="section-title">Paso 1: Asignación Secuencial de Direcciones IP</h2>
+        <p class="section-desc">
+          Resuelve de raíz el conflicto de IP de fábrica conectando los switches uno a uno al Puerto 1. La herramienta detecta el equipo, limpia la caché ARP del sistema operativo, aplica la nueva IP en VLAN 1 y persiste los cambios en Flash.
+        </p>
+      </div>
+
+      <!-- Diagrama de Flujo Paso 1 -->
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <div class="card-header">
+          <h3 class="card-title">Secuencia de 5 Fases del Paso 1</h3>
+          <span class="tag-badge emerald">Automatizado</span>
+        </div>
+        <div class="card-body">
+          <div style="cursor: pointer;" title="Haga clic para ampliar el flujo del Paso 1">
+            <img src="assets/img/diagrams/diagrama_flujo_paso1.png" alt="Diagrama de Flujo Paso 1: Asignación Secuencial" data-zoomable="true" data-title="Flujo Secuencial: Paso 1 (IP Setup)" data-desc="Conexión en Puerto 1 ➔ Detección ARP ➔ Mutex ➔ Cambio IP VLAN1 ➔ Persistencia en Flash (write).">
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculadora Interactiva de Subred -->
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <div class="card-header">
+          <h3 class="card-title">Calculadora de Subred & Generador de Pool de IPs</h3>
+          <span class="tag-badge cyan" id="calc-summary-range">192.168.0.2 ➔ 192.168.0.5</span>
+        </div>
+        <div class="card-body">
+          <div class="calc-grid">
+            <div class="calc-controls">
+              <div class="form-group">
+                <label for="calc-start-ip" class="form-label">Dirección IP Inicial del Lote</label>
+                <input type="text" id="calc-start-ip" class="form-input" value="192.168.0.2" placeholder="192.168.0.2">
+              </div>
+
+              <div class="form-group">
+                <label for="calc-count" class="form-label">Cantidad de Switches a Configurar</label>
+                <input type="number" id="calc-count" class="form-input" value="4" min="1" max="64">
+              </div>
+
+              <div class="form-group">
+                <span class="form-label">Presets Rápidos de Lote</span>
+                <div class="preset-buttons">
+                  <button type="button" class="preset-btn" data-count="2">[2]</button>
+                  <button type="button" class="preset-btn active" data-count="4">[4]</button>
+                  <button type="button" class="preset-btn" data-count="7">[7]</button>
+                  <button type="button" class="preset-btn" data-count="14">[14]</button>
+                  <button type="button" class="preset-btn" data-count="24">[24]</button>
+                </div>
+              </div>
+
+              <div class="callout-box info" style="margin: 0; padding: 1rem;">
+                <div class="callout-content">
+                  <h5 style="color: var(--blue-text); margin-bottom: 0.25rem;">Validación Automática</h5>
+                  <p style="font-size: 0.775rem; color: var(--text-muted);">
+                    El software bloquea la asignación de <code>192.168.0.1</code> (origen) y la IP del PC local para prevenir conflictos de enrutamiento.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="max-height: 230px; overflow-x: auto; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); min-width: 0; max-width: 100%;">
+                <table class="calc-results-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre Switch</th>
+                      <th>IP Asignada</th>
+                      <th>Máscara</th>
+                      <th>Interfaz</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calc-results-tbody">
+                    <!-- Filas generadas por app.js -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="cli-box">
+                <div class="cli-box-header">
+                  <span class="cli-box-title">Comandos CLI Autogenerados para Provisión</span>
+                  <button type="button" class="copy-btn" data-target="calc-cli-script">📋 Copiar Script</button>
+                </div>
+                <pre><code id="calc-cli-script"># Script CLI</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulador Interactivo Paso 1 -->
+      <div class="sim-container">
+        <div class="sim-toolbar">
+          <div class="sim-status-banner">
+            <span class="sim-status-dot" id="sim-p1-dot"></span>
+            <span id="sim-p1-status-text">Listo. Presione "Iniciar Simulación Paso 1" para reproducir la secuencia de conexión física.</span>
+          </div>
+          <div class="sim-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-emerald" id="sim-p1-start">⚡ Iniciar Simulación Paso 1</button>
+            <button type="button" class="btn btn-secondary" id="sim-p1-reset">↺ Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="sim-switches-grid" id="sim-p1-cards">
+          <!-- Tarjetas generadas por app.js -->
+        </div>
+
+        <div class="sim-console" id="sim-p1-console">
+          <div class="sim-log-line">
+            <span class="sim-log-time">[00:00:00]</span> <span class="sim-log-info">[INFO]</span> Simulador Paso 1 inicializado. Conecte los switches de a uno en el Puerto 1.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 4: PASO 2 - FLASHEO CONCURRENTE (R2)
+       ======================================================================== -->
+  <section id="paso2" class="section alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag emerald">Flasheo Masivo (R2)</span>
+        <h2 class="section-title">Paso 2: Actualización Multihilo en Memoria RAM</h2>
+        <p class="section-desc">
+          Con todos los switches interconectados en el switch de staging (cada uno con su IP única), el motor orquesta la descarga simultánea por TFTP RFC 1350 desde un buffer en RAM, graba la memoria Flash, gestiona el reinicio vigilando la caída de enlace y verifica la versión por SSH.
+        </p>
+      </div>
+
+      <!-- Diagrama de Flujo Paso 2 -->
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <div class="card-header">
+          <h3 class="card-title">Ciclo de Flasheo Concurrente y Bifurcación Post-Update</h3>
+          <span class="tag-badge cyan">Zero Disk I/O</span>
+        </div>
+        <div class="card-body">
+          <div style="cursor: pointer;" title="Haga clic para ampliar el flujo del Paso 2">
+            <img src="assets/img/diagrams/diagrama_flujo_paso2.png" alt="Diagrama de Flujo Paso 2: Flasheo Masivo y TFTP" data-zoomable="true" data-title="Flujo Concurrente: Paso 2 (Flasheo TFTP)" data-desc="Descarga TFTP en RAM ➔ Grabación Flash ➔ Reboot controlado (70-90s) ➔ Verificación SSH 'show version'.">
+          </div>
+
+          <div class="paso2-callouts-grid">
+            <div class="callout-box info" style="margin: 0;">
+              <div class="callout-icon">🔹</div>
+              <div class="callout-content">
+                <h4 class="callout-title">Opción A: Conservar IPs (Fase V2)</h4>
+                <p class="callout-text">Los switches conservan sus IPs únicas para continuar inmediatamente con la configuración de VLANs, aprovisionamiento de servicios FTTH o enrolamiento en el NMS central.</p>
+              </div>
+            </div>
+
+            <div class="callout-box success" style="margin: 0;">
+              <div class="callout-icon">📦</div>
+              <div class="callout-content">
+                <h4 class="callout-title">Opción B: Restaurar IP de Fábrica</h4>
+                <p class="callout-text">Al culminar la verificación con éxito, cada hilo reasigna <code>192.168.0.1</code> y ejecuta <code>write</code>. Los switches quedan listos para embalaje y entrega limpia a bodega.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulador Concurrente Paso 2 -->
+      <div class="sim-container" id="simulador-paso2">
+        <div class="sim-toolbar">
+          <div class="sim-status-banner">
+            <span class="sim-status-dot" id="sim-p2-dot"></span>
+            <span id="sim-p2-status-text">Listo. Presione "Iniciar Flasheo Concurrente" para activar los hilos paralelos.</span>
+          </div>
+          <div class="sim-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-emerald" id="sim-p2-start">⚡ Iniciar Flasheo Concurrente</button>
+            <button type="button" class="btn btn-secondary" id="sim-p2-reset">↺ Reiniciar</button>
+          </div>
+        </div>
+
+        <!-- Progreso Global -->
+        <div style="margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-family: var(--font-mono); margin-bottom: 0.4rem;">
+            <span>Progreso Global del Lote</span>
+            <span id="sim-p2-global-percent" style="font-weight: 700; color: var(--emerald-text);">0%</span>
+          </div>
+          <div class="sim-progress-track" style="height: 10px;">
+            <div class="sim-progress-fill" id="sim-p2-global-progress" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="sim-switches-grid" id="sim-p2-cards">
+          <!-- Tarjetas generadas por app.js -->
+        </div>
+
+        <div class="sim-console" id="sim-p2-console">
+          <div class="sim-log-line">
+            <span class="sim-log-time">[00:00:00]</span> <span class="sim-log-info">[INFO]</span> Servidor TFTP RFC 1350 en espera de solicitudes en UDP 69.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 5: FEEDBACK ACÚSTICO (WEB AUDIO API)
+       ======================================================================== -->
+  <section id="audio" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag amber">Telemetría Acústica</span>
+        <h2 class="section-title">Sistema de Retroalimentación Sonora</h2>
+        <p class="section-desc">
+          En el entorno ruidoso de un laboratorio de telecomunicaciones, la aplicación emite firmas de frecuencia exactas mediante síntesis de audio para que el operador no tenga que mirar constantemente la pantalla.
+        </p>
+      </div>
+
+      <div class="card" style="margin-bottom: 2.5rem;">
+        <div class="card-header">
+          <h3 class="card-title">Matriz de Frecuencias de Audio (app_gui.py SoundPlayer)</h3>
+          <span class="tag-badge amber">Web Audio API</span>
+        </div>
+        <div class="card-body">
+          <div style="cursor: pointer;" title="Haga clic para ampliar la infografía acústica">
+            <img src="assets/img/diagrams/diagrama_feedback_sonoro.png" alt="Diagrama de Feedback Sonoro" data-zoomable="true" data-title="Matriz de Beeps y Frecuencias del Sistema" data-desc="Espectro tonal de beeps: Prompt (C5-G5), Éxito (D5-A5), Alerta (A4 repetido) y Error (E4-C4).">
+          </div>
+        </div>
+      </div>
+
+      <!-- Soundboard Interactivo -->
+      <div class="soundboard-grid">
+        <div class="sound-card">
+          <span class="sound-badge prompt">Paso 1: IP Lista</span>
+          <button type="button" class="sound-icon-btn" id="sound-btn-prompt" aria-label="Reproducir tono Prompt">🔔</button>
+          <div class="sound-name">Tono Prompt</div>
+          <div class="sound-freq">D5 (587 Hz) ➔ A5 (880 Hz)</div>
+          <div class="sound-trigger">Indica al operador que el switch guardó su IP y debe desconectarlo para insertar el siguiente.</div>
+        </div>
+
+        <div class="sound-card">
+          <span class="sound-badge success">Paso 2: Éxito Total</span>
+          <button type="button" class="sound-icon-btn" id="sound-btn-success" aria-label="Reproducir tono Éxito">🎉</button>
+          <div class="sound-name">Tono Éxito</div>
+          <div class="sound-freq">C5 (523 Hz) ➔ E5 (659 Hz) ➔ G5 (784 Hz)</div>
+          <div class="sound-trigger">Tríada armónica ascendente emitida cuando el 100% de los switches del lote completaron la actualización.</div>
+        </div>
+
+        <div class="sound-card">
+          <span class="sound-badge warning">Advertencia</span>
+          <button type="button" class="sound-icon-btn" id="sound-btn-warning" aria-label="Reproducir tono Advertencia">⚠️</button>
+          <div class="sound-name">Tono Warning</div>
+          <div class="sound-freq">A4 (440 Hz) x2 [Doble Beep]</div>
+          <div class="sound-trigger">Alerta ante detección de MAC duplicada o si el operador olvidó retirar el switch previo del Puerto 1.</div>
+        </div>
+
+        <div class="sound-card">
+          <span class="sound-badge error">Fallo de Red</span>
+          <button type="button" class="sound-icon-btn" id="sound-btn-error" aria-label="Reproducir tono Error">❌</button>
+          <div class="sound-name">Tono Error</div>
+          <div class="sound-freq">E4 (330 Hz) ➔ C4 (260 Hz)</div>
+          <div class="sound-trigger">Tono grave descendente emitido si expira el timeout de ping (40s) o si falla la transferencia TFTP.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 6: GALERÍA DE RECURSOS VISUALES (LIGHTBOX)
+       ======================================================================== -->
+  <section id="galeria" class="section alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag cyan">Recursos Oficiales</span>
+        <h2 class="section-title">Galería de Diagramas, GUI y Laboratorio</h2>
+        <p class="section-desc">
+          Inspeccione en alta resolución los diagramas de ingeniería, capturas de la interfaz en producción y fotografías reales del banco de pruebas en laboratorio.
+        </p>
+      </div>
+
+      <div class="gallery-filter-bar">
+        <button type="button" class="gallery-filter-btn active" data-filter="all">Todos (15)</button>
+        <button type="button" class="gallery-filter-btn" data-filter="diagrams">Diagramas Técnicos</button>
+        <button type="button" class="gallery-filter-btn" data-filter="gui">Interfaz GUI v1.9</button>
+        <button type="button" class="gallery-filter-btn" data-filter="hardware">Hardware & Laboratorio</button>
+        <button type="button" class="gallery-filter-btn" data-filter="system">Sistema & Terminal</button>
+      </div>
+
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Diagramas -->
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Topología de Red de Staging" data-desc="Conexión de PC Operador (192.168.0.11), switch intermedio y lote de switches S600.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_topologia.png" alt="Diagrama de Topología">
+            <span class="gallery-overlay-badge">PNG 900x480</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Diagrama de Topología</div>
+              <div class="gallery-caption">Esquema de interconexión para staging seguro.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge blue">Arquitectura</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Anatomía Frontal Switch S600" data-desc="Esquema con Puerto 1 (2.5G Staging), LAN PoE, SFP+ 10G y botón Reset.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_anatomia_switch.png" alt="Anatomía del Switch S600">
+            <span class="gallery-overlay-badge">PNG 920x430</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Anatomía Switch S600</div>
+              <div class="gallery-caption">Disposición de puertos y señalización LED.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge emerald">Hardware</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Flujo Paso 1: Asignación IPs" data-desc="Cinco fases secuenciales con limpieza de caché ARP y mutex _BASE_IP_LOCK.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_flujo_paso1.png" alt="Flujo Paso 1">
+            <span class="gallery-overlay-badge">PNG 900x360</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Flujo Paso 1 (IPs)</div>
+              <div class="gallery-caption">Secuencia de aprovisionamiento de IPs en VLAN 1.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge blue">Proceso</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Flujo Paso 2: Flasheo Masivo" data-desc="TFTP RFC 1350 en RAM, grabación Flash, reboot vigilado y polling de versión.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_flujo_paso2.png" alt="Flujo Paso 2">
+            <span class="gallery-overlay-badge">PNG 900x360</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Flujo Paso 2 (Flasheo)</div>
+              <div class="gallery-caption">Orquestación paralela multihilo sin cuello de botella en disco.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge cyan">Concurrencia</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Menú Contextual de la Tabla" data-desc="Opciones avanzadas con clic derecho: reintentos, auditoría y rescate unitario.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_menu_contextual.png" alt="Menú Contextual">
+            <span class="gallery-overlay-badge">PNG 900x380</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Menú Contextual GUI</div>
+              <div class="gallery-caption">Acciones granulares de diagnóstico y rescate.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge amber">Diagnóstico</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="diagrams" data-zoomable="true" data-title="Reporte de Auditoría CSV" data-desc="Estructura de la hoja de cálculo generada automáticamente en Reportes_Lotes/.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/diagrams/diagrama_reporte_auditoria.png" alt="Reporte de Auditoría">
+            <span class="gallery-overlay-badge">PNG 950x370</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Reporte de Auditoría</div>
+              <div class="gallery-caption">Trazabilidad completa con MACs, versiones y estado.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge emerald">Auditoría</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GUI -->
+        <div class="gallery-item" data-category="gui" data-zoomable="true" data-title="Interfaz Principal v1.9" data-desc="Captura de pantalla real en ultra-alta resolución de la aplicación Tkinter en modo oscuro.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/gui/captura_interfaz_v1.9_real.png" alt="Interfaz Principal v1.9">
+            <span class="gallery-overlay-badge">PNG 1936x1048</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Interfaz General v1.9</div>
+              <div class="gallery-caption">Dashboard de alto contraste y vista panorámica.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge blue">Software</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="gui" data-zoomable="true" data-title="Lote Actualizado con Éxito" data-desc="Resultado real de un lote de 5 switches flasheados a v6.9.6 con log en vivo.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/gui/captura_actualizacion_exitosa.png" alt="Lote Exitoso">
+            <span class="gallery-overlay-badge">PNG 1024x516</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Lote Completado con Éxito</div>
+              <div class="gallery-caption">Insignias verdes ✔ ÉXITO y verificación de kernel 9300 7v4.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge emerald">Producción</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="gui" data-zoomable="true" data-title="Tabla Treeview de Switches" data-desc="Recorte de la grilla de monitoreo de switches con barra de herramientas rápidas.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/gui/captura_tabla_switches.png" alt="Tabla de Switches">
+            <span class="gallery-overlay-badge">PNG 1024x535</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Tabla de Control de Switches</div>
+              <div class="gallery-caption">Estados por IP, MAC, versión previa y resultado final.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge cyan">Monitoreo</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="gui" data-zoomable="true" data-title="Consola de Auditoría en Vivo" data-desc="Registro de eventos en tiempo real con códigos cromáticos [INFO], [SUCCESS], [WARNING], [ERROR].">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/gui/captura_consola_eventos.png" alt="Consola de Eventos">
+            <span class="gallery-overlay-badge">PNG 736x263</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Consola de Eventos</div>
+              <div class="gallery-caption">Trazabilidad de comandos SSH y sockets TFTP.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge amber">Logs</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hardware & Laboratorio -->
+        <div class="gallery-item" data-category="hardware" data-zoomable="true" data-title="Banco de Pruebas en Laboratorio" data-desc="Pila de switches S600 en proceso de actualización simultánea en el laboratorio de SOMOS.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/hardware/foto_banco_laboratorio.jpg" alt="Banco de Pruebas Laboratorio">
+            <span class="gallery-overlay-badge">JPG 576x1024</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Banco Físico de Staging</div>
+              <div class="gallery-caption">Switches S600 reales encendidos y conectados.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge emerald">Laboratorio</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="hardware" data-zoomable="true" data-title="Detalle de Conexión en Puerto 1" data-desc="Primer plano macro del conector Ethernet RJ45 en el Puerto 1 durante el Paso 1.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/hardware/foto_conexion_puerto1.jpg" alt="Conexión en Puerto 1">
+            <span class="gallery-overlay-badge">JPG 576x1024</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Conexión en Puerto 1</div>
+              <div class="gallery-caption">Regla estricta para la asignación de IP secuencial.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge blue">Conexión</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="hardware" data-zoomable="true" data-title="Placa de Características del Switch" data-desc="Etiqueta técnica original: Modelo S600W-5GT-2S+_FB, IP de fábrica 192.168.0.1, admin/admin.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/hardware/foto_etiqueta_switch.jpg" alt="Etiqueta Técnica del Switch">
+            <span class="gallery-overlay-badge">JPG 1024x576</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Etiqueta Técnica del Switch</div>
+              <div class="gallery-caption">Credenciales de fábrica y especificaciones eléctricas.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge amber">Placa Técnica</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sistema & Terminal -->
+        <div class="gallery-item" data-category="system" data-zoomable="true" data-title="Configuración de Red en PC Host" data-desc="Ventana de PowerShell ejecutando ipconfig (192.168.0.11) y ping instantáneo a 192.168.0.1.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/system/captura_ipconfig_pc.png" alt="IPConfig y Ping en Host">
+            <span class="gallery-overlay-badge">PNG 900x390</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Paso 0: IP del PC Operador</div>
+              <div class="gallery-caption">Verificación de subred 192.168.0.11 y conectividad.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge blue">Host PC</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-category="system" data-zoomable="true" data-title="Permisos en Windows Defender Firewall" data-desc="Alerta del Firewall de Windows bloqueando el puerto UDP 69 del servidor TFTP.">
+          <div class="gallery-thumb-wrap">
+            <img src="assets/img/system/captura_firewall_windows.png" alt="Alerta de Firewall de Windows">
+            <span class="gallery-overlay-badge">PNG 512x506</span>
+          </div>
+          <div class="gallery-meta">
+            <div>
+              <div class="gallery-title">Troubleshooting: Firewall UDP 69</div>
+              <div class="gallery-caption">Permiso crítico de red para las descargas TFTP.</div>
+            </div>
+            <div class="gallery-tag-row">
+              <span class="tag-badge amber">Seguridad</span>
+              <span>🔍 Clic para ampliar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 7: GUÍA DE DESPLIEGUE EN GITHUB Y GITHUB PAGES (R3)
+       ======================================================================== -->
+  <section id="despliegue" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag blue">Guía de Operaciones (R3)</span>
+        <h2 class="section-title">Subida a Git y Despliegue en GitHub Pages</h2>
+        <p class="section-desc">
+          Procedimiento exacto paso a paso para sincronizar el repositorio local con GitHub (<code style="word-break: break-all;">SantiagoRodriguezSOMOS/Actualizador-S600</code>) y publicar esta documentación web en GitHub Pages desde la carpeta <code>/docs</code>.
+        </p>
+        <div class="callout-box info" style="margin-top: 1.25rem; text-align: left;">
+          <div class="callout-icon">📘</div>
+          <div class="callout-content">
+            <h4 class="callout-title">¿No tienes Git instalado en tu terminal?</h4>
+            <p class="callout-text">
+              Consulta nuestra guía exhaustiva para principiantes: <a href="https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600/blob/main/GUIA_DESPLIEGUE_GITHUB.md" target="_blank" rel="noopener noreferrer" style="color: var(--cyan); font-weight: 700; text-decoration: underline;">GUIA_DESPLIEGUE_GITHUB.md</a>. Explica cómo subir los archivos mediante la interfaz web de GitHub (<a href="https://github.com/new" target="_blank" rel="noopener noreferrer" style="color: var(--blue-text);">github.com/new</a>) o la aplicación oficial <strong>GitHub Desktop</strong> sin ejecutar ningún comando en consola.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="git-guide-stepper">
+        <!-- Paso 1 -->
+        <div class="git-step-card">
+          <div class="git-step-num">1</div>
+          <div class="git-step-body">
+            <h3 class="git-step-title">Abrir PowerShell y Agregar Git al PATH</h3>
+            <p class="git-step-desc">
+              En sistemas Windows donde el comando <code>git</code> no esté cargado de forma predeterminada en el entorno de PowerShell, añada la ruta oficial de Git para la sesión actual:
+            </p>
+            <div class="cli-box">
+              <div class="cli-box-header">
+                <span class="cli-box-title">PowerShell</span>
+                <button type="button" class="copy-btn" data-target="code-git-1">📋 Copiar</button>
+              </div>
+              <pre><code id="code-git-1">$env:Path += ";C:\Program Files\Git\cmd"
+git --version</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="git-step-card">
+          <div class="git-step-num">2</div>
+          <div class="git-step-body">
+            <h3 class="git-step-title">Configurar el Repositorio Remoto Oficial</h3>
+            <p class="git-step-desc">
+              Actualice el origen remoto para sustituir el marcador genérico por el repositorio de producción de la organización:
+            </p>
+            <div class="cli-box">
+              <div class="cli-box-header">
+                <span class="cli-box-title">Git Bash / PowerShell</span>
+                <button type="button" class="copy-btn" data-target="code-git-2">📋 Copiar</button>
+              </div>
+              <pre><code id="code-git-2">cd "c:\Users\Administrador\Documents\Desarrollo\Actualizador_S600_GitHub"
+git remote set-url origin https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600.git
+git remote -v</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="git-step-card">
+          <div class="git-step-num">3</div>
+          <div class="git-step-body">
+            <h3 class="git-step-title">Preparar (Stage) y Confirmar (Commit) los Cambios</h3>
+            <p class="git-step-desc">
+              Añada todos los archivos del proyecto, incluyendo el código fuente, suite de pruebas y la carpeta <code>docs/</code> recién generada con todos sus recursos independientes:
+            </p>
+            <div class="cli-box">
+              <div class="cli-box-header">
+                <span class="cli-box-title">Git</span>
+                <button type="button" class="copy-btn" data-target="code-git-3">📋 Copiar</button>
+              </div>
+              <pre><code id="code-git-3">git add .
+git status
+git commit -m "feat: Landing page interactiva y documentacion oficial para GitHub Pages v1.9"</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="git-step-card">
+          <div class="git-step-num">4</div>
+          <div class="git-step-body">
+            <h3 class="git-step-title">Subir Cambios a la Rama Principal (Push)</h3>
+            <p class="git-step-desc">
+              Defina la rama principal como <code>main</code> y sincronice con el repositorio remoto de GitHub:
+            </p>
+            <div class="cli-box">
+              <div class="cli-box-header">
+                <span class="cli-box-title">Git</span>
+                <button type="button" class="copy-btn" data-target="code-git-4">📋 Copiar</button>
+              </div>
+              <pre><code id="code-git-4">git branch -M main
+git push -u origin main</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="git-step-card">
+          <div class="git-step-num">5</div>
+          <div class="git-step-body">
+            <h3 class="git-step-title">Habilitar y Configurar GitHub Pages</h3>
+            <p class="git-step-desc">
+              Acceda a la configuración del repositorio en GitHub para activar el despliegue automático desde la carpeta <code>/docs</code>:
+            </p>
+            <ol style="margin-left: 1.5rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem;">
+              <li>Ingrese a: <a href="https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600/settings/pages" target="_blank" rel="noopener noreferrer" style="word-break: break-all;"><code>https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600/settings/pages</code></a></li>
+              <li>En la sección <strong>Build and deployment</strong> &gt; <strong>Source</strong>, seleccione: <code>Deploy from a branch</code>.</li>
+              <li>Bajo <strong>Branch</strong>, seleccione la rama <code>main</code> y en el menú de carpeta elija <code>/docs</code>.</li>
+              <li>Haga clic en el botón <strong>Save</strong>.</li>
+              <li>Asegúrese de que la casilla <strong>Enforce HTTPS</strong> permanezca activada.</li>
+            </ol>
+            <div class="callout-box success" style="margin: 0;">
+              <div class="callout-icon">🚀</div>
+              <div class="callout-content">
+                <h4 class="callout-title">URL Canónica de Producción</h4>
+                <p class="callout-text">
+                  En menos de 60 segundos, GitHub Actions compilará la página y estará disponible públicamente en: <br>
+                  <a href="https://santiagorodriguezsomos.github.io/Actualizador-S600/" target="_blank" rel="noopener noreferrer" style="color: var(--emerald-text); font-weight: 700; word-break: break-all;">
+                    https://santiagorodriguezsomos.github.io/Actualizador-S600/
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN 8: REFERENCIA CLI & TROUBLESHOOTING
+       ======================================================================== -->
+  <section id="troubleshooting" class="section alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag amber">Diagnóstico y CLI</span>
+        <h2 class="section-title">Cheat Sheet CLI del Switch S600 & Solución de Problemas</h2>
+        <p class="section-desc">
+          Referencia rápida de comandos de consola del switch y resolución de bloqueos habituales de firewall y caché de red.
+        </p>
+      </div>
+
+      <div class="troubleshooting-grid">
+        <!-- Tabla CLI -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Comandos CLI Oficiales del Switch S600</h3>
+            <span class="tag-badge cyan">SSH Port 22</span>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div style="overflow-x: auto;">
+              <table class="cli-table">
+                <thead>
+                  <tr>
+                    <th>Comando Switch CLI</th>
+                    <th>Contexto / Modo</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code class="cli-code">enable</code></td>
+                    <td>Modo Usuario</td>
+                    <td>Ingresa a modo privilegiado (Prompt: <code>Switch#</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">configure terminal</code></td>
+                    <td>Modo Privilegiado</td>
+                    <td>Ingresa a modo de configuración global.</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">interface vlan1</code></td>
+                    <td>Configuración Global</td>
+                    <td>Accede a la interfaz de administración VLAN 1.</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">ip address &lt;ip&gt; 255.255.255.0</code></td>
+                    <td>Configuración Interfaz</td>
+                    <td>Asigna la dirección IP de gestión al switch.</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">download switch &lt;ip_tftp&gt; &lt;fw.tar.gz&gt;</code></td>
+                    <td>Modo Privilegiado</td>
+                    <td>Inicia descarga del firmware por TFTP (Puerto 69).</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">reboot</code></td>
+                    <td>Modo Privilegiado</td>
+                    <td>Reinicia el sistema operativo del switch.</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">show version</code></td>
+                    <td>Modo Privilegiado</td>
+                    <td>Verifica versión de firmware, kernel y MAC address.</td>
+                  </tr>
+                  <tr>
+                    <td><code class="cli-code">write</code></td>
+                    <td>Modo Privilegiado</td>
+                    <td>Persiste configuración a la memoria Flash ROM.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna de Troubleshooting -->
+        <div class="troubleshooting-col" style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; max-width: 100%;">
+          <!-- Firewall UDP 69 -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Habilitar Firewall para TFTP (UDP 69)</h3>
+              <span class="tag-badge amber">Windows Defender</span>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+                Si las descargas TFTP fallan por timeout en el Paso 2, abra PowerShell como Administrador y ejecute la siguiente regla de entrada:
+              </p>
+              <div class="cli-box">
+                <div class="cli-box-header">
+                  <span class="cli-box-title">PowerShell (Admin)</span>
+                  <button type="button" class="copy-btn" data-target="code-firewall">📋 Copiar</button>
+                </div>
+                <pre><code id="code-firewall">New-NetFirewallRule -DisplayName "SOMOS S600 TFTP Server" -Direction Inbound -Protocol UDP -LocalPort 69 -Action Allow</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Limpieza de ARP -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Limpieza Manual de Caché ARP</h3>
+              <span class="tag-badge blue">Capa de Enlace</span>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">
+                Si Windows retiene en memoria la dirección MAC de un switch anterior en la IP <code>192.168.0.1</code>, purgue la tabla de vecinos ARP:
+              </p>
+              <div class="cli-box">
+                <div class="cli-box-header">
+                  <span class="cli-box-title">CMD / PowerShell (Admin)</span>
+                  <button type="button" class="copy-btn" data-target="code-arp">📋 Copiar</button>
+                </div>
+                <pre><code id="code-arp">arp -d 192.168.0.1
+# O purga completa:
+netsh interface ip delete arpcache</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       FOOTER INSTITUCIONAL SOMOS
+       ======================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/img/branding/somos_tagline.jpg" alt="SOMOS - Connecting people to expand humanity" class="footer-tagline-img" data-zoomable="true" data-title="Lema Institucional SOMOS" data-desc="Connecting people to expand humanity. SOMOS Internet S.A.S.">
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; max-width: 320px;">
+            Solución oficial de automatización de red para la homologación, actualización y puesta a punto de equipamiento de acceso S600.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-heading">Navegación Rápida</div>
+          <ul class="footer-links">
+            <li><a href="#arquitectura">Arquitectura Técnica</a></li>
+            <li><a href="#hardware">Anatomía Switch S600</a></li>
+            <li><a href="#paso1">Paso 1: Asignación IPs</a></li>
+            <li><a href="#paso2">Paso 2: Flasheo Masivo</a></li>
+            <li><a href="#audio">Telemetría Acústica</a></li>
+            <li><a href="#galeria">Galería Multimedia</a></li>
+            <li><a href="#despliegue">Despliegue Git (CLI)</a></li>
+            <li><a href="https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600/blob/main/GUIA_DESPLIEGUE_GITHUB.md" target="_blank" rel="noopener noreferrer">Guía Despliegue Web / Desktop (GUIA_DESPLIEGUE_GITHUB.md)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-heading">Garantías de Diseño</div>
+          <ul class="footer-links">
+            <li style="color: var(--text-muted); font-size: 0.85rem;">✔ 100% Standalone (file:///)</li>
+            <li style="color: var(--text-muted); font-size: 0.85rem;">✔ Compatible con GitHub Pages</li>
+            <li style="color: var(--text-muted); font-size: 0.85rem;">✔ Zero Dependencias / Zero CORS</li>
+            <li style="color: var(--text-muted); font-size: 0.85rem;">✔ Web Audio API Synthesizer</li>
+            <li style="color: var(--text-muted); font-size: 0.85rem;">✔ 26 Pruebas Unitarias Verificadas</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 <strong>SOMOS Internet S.A.S.</strong> — Actualizador Masivo para Switches S600 C-137 v1.9. Todos los derechos reservados.
+        </div>
+        <div>
+          Repositorio: <a href="https://github.com/SantiagoRodriguezSOMOS/Actualizador-S600" target="_blank" rel="noopener noreferrer">SantiagoRodriguezSOMOS/Actualizador-S600</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL LIGHTBOX FULLSCREEN (VANILLA JS)
+       ======================================================================== -->
+  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Visualizador de imágenes en alta resolución">
+    <div class="lightbox-content-box">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Cerrar modal">&times;</button>
+      <img src="" alt="" class="lightbox-img" id="lightbox-img" title="Haga clic para alternar zoom">
+      <div class="lightbox-caption-bar">
+        <div class="lightbox-caption-title" id="lightbox-caption-title"></div>
+        <div class="lightbox-caption-desc" id="lightbox-caption-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Script Principal -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
